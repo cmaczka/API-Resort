@@ -52,7 +52,7 @@ namespace Resort.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public ActionResult<VillaDto> CreateVilla([FromBody] VillaDto villaDto)
+        public ActionResult<VillaDto> CreateVilla([FromBody] VillaCreateDto villaDto)
         {
             if (ModelState.IsValid == false)
             {
@@ -63,10 +63,7 @@ namespace Resort.Controllers
             {
                 return BadRequest();
             }
-            if (villaDto.Id > 0)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
+            
             if (_db.Villas.Any(v => v.Nombre.ToLower() == villaDto.Nombre.ToLower()))
             {
                 ModelState.AddModelError("NombreExiste", "La villa con ese nombre ya existe.");
@@ -84,7 +81,7 @@ namespace Resort.Controllers
             };
             _db.Villas.Add(villa);
             _db.SaveChanges();
-            return CreatedAtAction(nameof(GetVilla), new { id = villaDto.Id }, villaDto);
+            return CreatedAtAction(nameof(GetVilla), new { id = villa.Id }, villaDto);
         }
         [HttpDelete("id:int")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -109,7 +106,7 @@ namespace Resort.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult UpdateVilla(int id, [FromBody] VillaDto villaDto)
+        public ActionResult UpdateVilla(int id, [FromBody] VillaUpdateDto villaDto)
         {
             if (ModelState.IsValid == false)
             {
@@ -148,7 +145,7 @@ namespace Resort.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult UpdatePartialVilla(int id, [FromBody] JsonPatchDocument<VillaDto> patchDoc)
+        public ActionResult UpdatePartialVilla(int id, [FromBody] JsonPatchDocument<VillaUpdateDto> patchDoc)
         {
             if (patchDoc == null || id == 0)
             {
@@ -161,7 +158,7 @@ namespace Resort.Controllers
                 return NotFound();
             }
 
-            VillaDto villaDto = new() {
+            VillaUpdateDto villaDto = new() {
                 Id = villa.Id,
                 Nombre = villa.Nombre,
                 Detalle = villa.Detalle,
