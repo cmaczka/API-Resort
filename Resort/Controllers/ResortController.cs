@@ -7,7 +7,7 @@ using Resort.Modelos.Dto;
 
 namespace Resort.Controllers
 {
-    
+
 
     [Route("api/[controller]")]
     [ApiController]
@@ -138,4 +138,5 @@ namespace Resort.Controllers
             }
             return NoContent();
         }
+    }
 }
