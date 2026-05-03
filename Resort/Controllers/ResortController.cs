@@ -14,17 +14,18 @@ namespace Resort.Controllers
     public class ResortController : ControllerBase
     {
         private readonly ILogger<ResortController> _logger;
-
-        public ResortController(ILogger<ResortController> logger)
+        private readonly ApplicationDBContext _db;
+        public ResortController(ILogger<ResortController> logger, ApplicationDBContext db)
         {
             _logger = logger;
+            _db = db;
         }
 
         [HttpGet]
         public ActionResult<IEnumerable<VillaDto>> GetVillas()
         {
             _logger.LogInformation("Obteniendo todas las villas");
-            return Ok(VillaStore.villaList);
+            return Ok(_db.Villas.ToList());
         }
         [HttpGet("id:int")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -37,7 +38,7 @@ namespace Resort.Controllers
                 _logger.LogError("El id de la villa no puede ser 0");
                 return BadRequest();
             }
-            var villa = VillaStore.villaList.FirstOrDefault(v => v.Id == id);
+            var villa = _db.Villas.FirstOrDefault(v => v.Id == id);
             if (villa == null)
             {
                 return NotFound();
@@ -65,13 +66,23 @@ namespace Resort.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
-            if (VillaStore.villaList.Any(v => v.Nombre.ToLower() == villaDto.Nombre.ToLower()))
+            if (_db.Villas.Any(v => v.Nombre.ToLower() == villaDto.Nombre.ToLower()))
             {
                 ModelState.AddModelError("NombreExiste", "La villa con ese nombre ya existe.");
                 return BadRequest(ModelState);
             }
-            villaDto.Id = VillaStore.villaList.OrderByDescending(v => v.Id).FirstOrDefault().Id + 1;
-            VillaStore.villaList.Add(villaDto);
+            Villa villa = new Villa
+            {
+                Nombre = villaDto.Nombre,
+                Detalle = villaDto.Detalle,
+                Tarifa = villaDto.Tarifa,
+                Ocupantes = villaDto.Ocupantes,
+                MetrosCuadrados = villaDto.MetrosCuadrados,
+                ImageUrl = villaDto.ImageUrl,
+                Amenidad = villaDto.Amenidad
+            };
+            _db.Villas.Add(villa);
+            _db.SaveChanges();
             return CreatedAtAction(nameof(GetVilla), new { id = villaDto.Id }, villaDto);
         }
         [HttpDelete("id:int")]
@@ -84,12 +95,13 @@ namespace Resort.Controllers
             {
                 return BadRequest();
             }
-            var villa = VillaStore.villaList.FirstOrDefault(v => v.Id == id);
+            var villa = _db.Villas.FirstOrDefault(v => v.Id == id);
             if (villa == null)
             {
                 return NotFound();
             }
-            VillaStore.villaList.Remove(villa);
+            _db.Villas.Remove(villa);
+            _db.SaveChanges();
             return NoContent();
         }
         [HttpPut("id:int")]
@@ -106,14 +118,19 @@ namespace Resort.Controllers
             {
                 return BadRequest();
             }
-            var villa = VillaStore.villaList.FirstOrDefault(v => v.Id == id);
-            if (villa == null)
-            {
-                return NotFound();
-            }
-            villa.Nombre = villaDto.Nombre;
-            villa.Ocupantes = villaDto.Ocupantes;
-            villa.MetrosCuadrados = villaDto.MetrosCuadrados;
+
+            Villa modelo = new() {
+                Id = villaDto.Id,
+                Nombre = villaDto.Nombre,
+                Detalle = villaDto.Detalle,
+                Tarifa = villaDto.Tarifa,
+                Ocupantes = villaDto.Ocupantes,
+                MetrosCuadrados = villaDto.MetrosCuadrados,
+                ImageUrl = villaDto.ImageUrl,
+                Amenidad = villaDto.Amenidad
+            };
+            _db.Villas.Update(modelo);
+            _db.SaveChanges();
             return NoContent();
         }
         [HttpPatch("id:int")]
@@ -126,16 +143,43 @@ namespace Resort.Controllers
             {
                 return BadRequest();
             }
-            var villa = VillaStore.villaList.FirstOrDefault(v => v.Id == id);
-            if (villa == null)
+            var villa = _db.Villas.FirstOrDefault(v => v.Id == id);
+
+            VillaDto villaDto = new() {
+                Id = villa.Id,
+                Nombre = villa.Nombre,
+                Detalle = villa.Detalle,
+                Tarifa = villa.Tarifa,
+                Ocupantes = villa.Ocupantes,
+                MetrosCuadrados = villa.MetrosCuadrados,
+                ImageUrl = villa.ImageUrl,
+                Amenidad = villa.Amenidad
+            };
+
+            if(villa == null)
             {
                 return NotFound();
             }
-            patchDoc.ApplyTo(villa);
+
+            patchDoc.ApplyTo(villaDto);
             if (ModelState.IsValid == false)
             {
                 return BadRequest(ModelState);
             }
+           
+              Villa modelo = new() {
+                 Id = villaDto.Id,
+                 Nombre = villaDto.Nombre,
+                 Detalle = villaDto.Detalle,
+                 Tarifa = villaDto.Tarifa,
+                 Ocupantes = villaDto.Ocupantes,
+                 MetrosCuadrados = villaDto.MetrosCuadrados,
+                 ImageUrl = villaDto.ImageUrl,
+                 Amenidad = villaDto.Amenidad
+              };
+
+            _db.Villas.Update(modelo);
+            _db.SaveChanges();
             return NoContent();
         }
     }

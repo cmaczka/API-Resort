@@ -11,7 +11,7 @@ namespace Resort.Modelos.Dto
         public string Detalle { get; set; }
         [Required]
         public double Tarifa { get; set; }
-        public object Ocupantes { get; internal set; }
+        public int Ocupantes { get; internal set; }
         public double MetrosCuadrados { get; internal set; }
         public string ImageUrl { get; set; }
         public string Amenidad { get; set; }
