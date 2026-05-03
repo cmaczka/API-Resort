@@ -497,6 +497,11 @@
           "Amenidad": {
             "type": "string",
             "nullable": true
+          },
+          "RowVersion": {
+            "type": "string",
+            "format": "byte",
+            "nullable": true
           }
         },
         "additionalProperties": false

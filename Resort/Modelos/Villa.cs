@@ -19,5 +19,9 @@ namespace Resort.Modelos
         public string Amenidad { get; set; }
         public DateTime FechaCreacion { get; set; }
         public DateTime FechaActualizacion { get; set; }
+
+        [Timestamp]
+        public byte[] RowVersion { get; set; }
+
     }
 }

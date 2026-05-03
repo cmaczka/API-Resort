@@ -15,5 +15,9 @@ namespace Resort.Modelos.Dto
         public double MetrosCuadrados { get; internal set; }
         public string ImageUrl { get; set; }
         public string Amenidad { get; set; }
+
+        [Timestamp]
+        public byte[] RowVersion { get; set; }
+
     }
 }

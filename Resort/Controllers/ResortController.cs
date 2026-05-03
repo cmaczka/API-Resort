@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Resort.Datos;
 using Resort.Modelos;
 using Resort.Modelos.Dto;
+using Microsoft.EntityFrameworkCore;
 
 namespace Resort.Controllers
 {
@@ -118,19 +119,29 @@ namespace Resort.Controllers
             {
                 return BadRequest();
             }
+            var villa = _db.Villas.FirstOrDefault(v => v.Id == id);
 
-            Villa modelo = new() {
-                Id = villaDto.Id,
-                Nombre = villaDto.Nombre,
-                Detalle = villaDto.Detalle,
-                Tarifa = villaDto.Tarifa,
-                Ocupantes = villaDto.Ocupantes,
-                MetrosCuadrados = villaDto.MetrosCuadrados,
-                ImageUrl = villaDto.ImageUrl,
-                Amenidad = villaDto.Amenidad
-            };
-            _db.Villas.Update(modelo);
-            _db.SaveChanges();
+            if (villa == null)
+            {
+                return NotFound();
+            }
+
+            villa.Nombre = villaDto.Nombre;
+            villa.Detalle = villaDto.Detalle;
+            villa.Tarifa = villaDto.Tarifa;
+            villa.Ocupantes = villaDto.Ocupantes;
+            villa.MetrosCuadrados = villaDto.MetrosCuadrados;
+            villa.ImageUrl = villaDto.ImageUrl;
+            _db.Entry(villa).Property(x => x.RowVersion).OriginalValue = villaDto.RowVersion;
+            try
+            {
+                _db.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return Conflict("La villa fue modificada por otro usuario");
+            }
+            
             return NoContent();
         }
         [HttpPatch("id:int")]
@@ -145,6 +156,11 @@ namespace Resort.Controllers
             }
             var villa = _db.Villas.FirstOrDefault(v => v.Id == id);
 
+            if (villa == null)
+            {
+                return NotFound();
+            }
+
             VillaDto villaDto = new() {
                 Id = villa.Id,
                 Nombre = villa.Nombre,
@@ -156,29 +172,24 @@ namespace Resort.Controllers
                 Amenidad = villa.Amenidad
             };
 
-            if(villa == null)
-            {
-                return NotFound();
-            }
+        
 
-            patchDoc.ApplyTo(villaDto);
-            if (ModelState.IsValid == false)
+            patchDoc.ApplyTo(villaDto, (Microsoft.AspNetCore.JsonPatch.Adapters.IObjectAdapter)ModelState);
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-           
-              Villa modelo = new() {
-                 Id = villaDto.Id,
-                 Nombre = villaDto.Nombre,
-                 Detalle = villaDto.Detalle,
-                 Tarifa = villaDto.Tarifa,
-                 Ocupantes = villaDto.Ocupantes,
-                 MetrosCuadrados = villaDto.MetrosCuadrados,
-                 ImageUrl = villaDto.ImageUrl,
-                 Amenidad = villaDto.Amenidad
-              };
 
-            _db.Villas.Update(modelo);
+
+            villa.Id = villaDto.Id;
+            villa.Nombre = villaDto.Nombre;
+            villa.Detalle = villaDto.Detalle;
+            villa.Tarifa = villaDto.Tarifa;
+            villa.Ocupantes = villaDto.Ocupantes;
+            villa.MetrosCuadrados = villaDto.MetrosCuadrados;
+            villa.ImageUrl = villaDto.ImageUrl;
+            villa.Amenidad = villaDto.Amenidad;
+             
             _db.SaveChanges();
             return NoContent();
         }
