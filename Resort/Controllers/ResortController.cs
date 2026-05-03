@@ -23,10 +23,10 @@ namespace Resort.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<VillaDto>> GetVillas()
+        public async Task<ActionResult<IEnumerable<VillaDto>>> GetVillas()
         {
             _logger.LogInformation("Obteniendo todas las villas");
-            return Ok(_db.Villas.ToList());
+            return Ok(await _db.Villas.ToListAsync());
         }
         [HttpGet("id:int")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -52,7 +52,7 @@ namespace Resort.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public ActionResult<VillaDto> CreateVilla([FromBody] VillaCreateDto villaDto)
+        public async Task<ActionResult<VillaDto>> CreateVilla([FromBody] VillaCreateDto villaDto)
         {
             if (ModelState.IsValid == false)
             {
@@ -80,14 +80,14 @@ namespace Resort.Controllers
                 Amenidad = villaDto.Amenidad
             };
             _db.Villas.Add(villa);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
             return CreatedAtAction(nameof(GetVilla), new { id = villa.Id }, villaDto);
         }
         [HttpDelete("id:int")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult DeleteVilla(int id)
+        public async Task<ActionResult> DeleteVilla(int id)
         {
             if (id == 0)
             {
@@ -99,14 +99,14 @@ namespace Resort.Controllers
                 return NotFound();
             }
             _db.Villas.Remove(villa);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
             return NoContent();
         }
         [HttpPut("id:int")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult UpdateVilla(int id, [FromBody] VillaUpdateDto villaDto)
+        public async Task<ActionResult> UpdateVilla(int id, [FromBody] VillaUpdateDto villaDto)
         {
             if (ModelState.IsValid == false)
             {
@@ -132,7 +132,7 @@ namespace Resort.Controllers
             _db.Entry(villa).Property(x => x.RowVersion).OriginalValue = villaDto.RowVersion;
             try
             {
-                _db.SaveChanges();
+                await _db.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -145,13 +145,13 @@ namespace Resort.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult UpdatePartialVilla(int id, [FromBody] JsonPatchDocument<VillaUpdateDto> patchDoc)
+        public async Task<ActionResult> UpdatePartialVilla(int id, [FromBody] JsonPatchDocument<VillaUpdateDto> patchDoc)
         {
             if (patchDoc == null || id == 0)
             {
                 return BadRequest();
             }
-            var villa = _db.Villas.FirstOrDefault(v => v.Id == id);
+            var villa = await _db.Villas.FirstOrDefaultAsync(v => v.Id == id);
 
             if (villa == null)
             {
@@ -190,7 +190,7 @@ namespace Resort.Controllers
             _db.Entry(villa).Property(x => x.RowVersion).OriginalValue = villaDto.RowVersion;
             try
             {
-                _db.SaveChanges();
+                await _db.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
