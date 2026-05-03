@@ -169,7 +169,8 @@ namespace Resort.Controllers
                 Ocupantes = villa.Ocupantes,
                 MetrosCuadrados = villa.MetrosCuadrados,
                 ImageUrl = villa.ImageUrl,
-                Amenidad = villa.Amenidad
+                Amenidad = villa.Amenidad,
+                RowVersion = villa.RowVersion 
             };
 
         
