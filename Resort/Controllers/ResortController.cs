@@ -189,8 +189,15 @@ namespace Resort.Controllers
             villa.MetrosCuadrados = villaDto.MetrosCuadrados;
             villa.ImageUrl = villaDto.ImageUrl;
             villa.Amenidad = villaDto.Amenidad;
-             
-            _db.SaveChanges();
+            _db.Entry(villa).Property(x => x.RowVersion).OriginalValue = villaDto.RowVersion;
+            try
+            {
+                _db.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return Conflict("La villa fue modificada por otro usuario");
+            }
             return NoContent();
         }
     }
