@@ -15,8 +15,5 @@ namespace Resort.Modelos.Dto
         public string ImageUrl { get; set; }
         public string Amenidad { get; set; }
 
-        [Timestamp]
-        public byte[] RowVersion { get; set; }
-
     }
 }

@@ -28,14 +28,14 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "villaDto",
-        "Type": "Resort.Modelos.Dto.VillaDto",
+        "Name": "villaCreateDto",
+        "Type": "Resort.Modelos.Dto.VillaCreateDto",
         "IsRequired": true
       }
     ],
     "ReturnTypes": [
       {
-        "Type": "Resort.Modelos.Dto.VillaDto",
+        "Type": "Resort.Modelos.Dto.VillaCreateDto",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -158,7 +158,7 @@
       },
       {
         "Name": "villaDto",
-        "Type": "Resort.Modelos.Dto.VillaDto",
+        "Type": "Resort.Modelos.Dto.VillaUpdateDto",
         "IsRequired": true
       }
     ],
@@ -203,7 +203,7 @@
       },
       {
         "Name": "patchDoc",
-        "Type": "Microsoft.AspNetCore.JsonPatch.JsonPatchDocument\u00601[[Resort.Modelos.Dto.VillaDto, Resort, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "Microsoft.AspNetCore.JsonPatch.JsonPatchDocument\u00601[[Resort.Modelos.Dto.VillaUpdateDto, Resort, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "IsRequired": true
       }
     ],

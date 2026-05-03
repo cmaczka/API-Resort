@@ -1,4 +1,6 @@
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Resort;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +17,13 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 
 builder.Services.AddDbContext<Resort.Datos.ApplicationDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
+builder.Services.AddAutoMapper(cfg =>
+{
+    cfg.AddProfile<MappingConfig>();
+});
+
 
 var app = builder.Build();
 

@@ -50,17 +50,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/VillaDto"
+                "$ref": "#/components/schemas/VillaCreateDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/VillaDto"
+                "$ref": "#/components/schemas/VillaCreateDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/VillaDto"
+                "$ref": "#/components/schemas/VillaCreateDto"
               }
             }
           }
@@ -71,17 +71,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/VillaDto"
+                  "$ref": "#/components/schemas/VillaCreateDto"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/VillaDto"
+                  "$ref": "#/components/schemas/VillaCreateDto"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/VillaDto"
+                  "$ref": "#/components/schemas/VillaCreateDto"
                 }
               }
             }
@@ -268,17 +268,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/VillaDto"
+                "$ref": "#/components/schemas/VillaUpdateDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/VillaDto"
+                "$ref": "#/components/schemas/VillaUpdateDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/VillaDto"
+                "$ref": "#/components/schemas/VillaUpdateDto"
               }
             }
           }
@@ -347,17 +347,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/VillaDtoJsonPatchDocument"
+                "$ref": "#/components/schemas/VillaUpdateDtoJsonPatchDocument"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/VillaDtoJsonPatchDocument"
+                "$ref": "#/components/schemas/VillaUpdateDtoJsonPatchDocument"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/VillaDtoJsonPatchDocument"
+                "$ref": "#/components/schemas/VillaUpdateDtoJsonPatchDocument"
               }
             }
           }
@@ -456,6 +456,47 @@
         },
         "additionalProperties": { }
       },
+      "VillaCreateDto": {
+        "required": [
+          "Nombre",
+          "Tarifa"
+        ],
+        "type": "object",
+        "properties": {
+          "Nombre": {
+            "maxLength": 30,
+            "minLength": 1,
+            "type": "string"
+          },
+          "Detalle": {
+            "type": "string",
+            "nullable": true
+          },
+          "Tarifa": {
+            "type": "number",
+            "format": "double"
+          },
+          "Ocupantes": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "MetrosCuadrados": {
+            "type": "number",
+            "format": "double",
+            "readOnly": true
+          },
+          "ImageUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "Amenidad": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "VillaDto": {
         "required": [
           "Nombre",
@@ -506,13 +547,66 @@
         },
         "additionalProperties": false
       },
-      "VillaDtoJsonPatchDocument": {
+      "VillaUpdateDto": {
+        "required": [
+          "Id",
+          "ImageUrl",
+          "Nombre",
+          "Ocupantes",
+          "Tarifa"
+        ],
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "Nombre": {
+            "maxLength": 30,
+            "minLength": 1,
+            "type": "string"
+          },
+          "Detalle": {
+            "type": "string",
+            "nullable": true
+          },
+          "Tarifa": {
+            "type": "number",
+            "format": "double"
+          },
+          "Ocupantes": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "MetrosCuadrados": {
+            "type": "number",
+            "format": "double",
+            "readOnly": true
+          },
+          "ImageUrl": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "Amenidad": {
+            "type": "string",
+            "nullable": true
+          },
+          "RowVersion": {
+            "type": "string",
+            "format": "byte",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "VillaUpdateDtoJsonPatchDocument": {
         "type": "object",
         "properties": {
           "Operations": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/VillaDtoOperation"
+              "$ref": "#/components/schemas/VillaUpdateDtoOperation"
             },
             "nullable": true,
             "readOnly": true
@@ -523,7 +617,7 @@
         },
         "additionalProperties": false
       },
-      "VillaDtoOperation": {
+      "VillaUpdateDtoOperation": {
         "type": "object",
         "properties": {
           "OperationType": {

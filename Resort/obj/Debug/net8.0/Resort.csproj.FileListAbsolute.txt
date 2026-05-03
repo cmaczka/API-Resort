@@ -147,3 +147,6 @@ D:\Udemy\API\Resort\Resort\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Drawi
 D:\Udemy\API\Resort\Resort\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
 D:\Udemy\API\Resort\Resort\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 D:\Udemy\API\Resort\Resort\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
+D:\Udemy\API\Resort\Resort\bin\Debug\net8.0\AutoMapper.dll
+D:\Udemy\API\Resort\Resort\bin\Debug\net8.0\Microsoft.Extensions.Primitives.dll
+D:\Udemy\API\Resort\Resort\bin\Debug\net8.0\System.Diagnostics.DiagnosticSource.dll
