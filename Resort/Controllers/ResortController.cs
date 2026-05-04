@@ -6,6 +6,7 @@ using Resort.Modelos;
 using Resort.Modelos.Dto;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
+using Resort.Repositorio.IRepositorio;
 
 namespace Resort.Controllers
 {
@@ -16,20 +17,20 @@ namespace Resort.Controllers
     public class ResortController : ControllerBase
     {
         private readonly ILogger<ResortController> _logger;
-        private readonly ApplicationDBContext _db;
+        private readonly IVillaRepositorio _villaRepo;
         private readonly IMapper _mapper;
-        public ResortController(ILogger<ResortController> logger, ApplicationDBContext db, IMapper mapper)
+        public ResortController(ILogger<ResortController> logger, IVillaRepositorio villaRepo, IMapper mapper)
         {
             _logger = logger;
-            _db = db;
             _mapper = mapper;
+            _villaRepo = villaRepo;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<VillaDto>>> GetVillas()
         {
             _logger.LogInformation("Obteniendo todas las villas");
-            IEnumerable<Villa> villas = await _db.Villas.ToListAsync();
+            IEnumerable<Villa> villas = await _villaRepo.ObtenerTodos();
             IEnumerable<VillaDto> villaDtos = _mapper.Map<IEnumerable<VillaDto>>(villas);
             return Ok(villaDtos);
         }
@@ -44,7 +45,7 @@ namespace Resort.Controllers
                 _logger.LogError("El id de la villa no puede ser 0");
                 return BadRequest();
             }
-            var villa = _db.Villas.FirstOrDefault(v => v.Id == id);
+            var villa = _villaRepo.Obtener(v => v.Id == id);
             if (villa == null)
             {
                 return NotFound();
@@ -70,14 +71,13 @@ namespace Resort.Controllers
                 return BadRequest();
             }
             
-            if (_db.Villas.Any(v => v.Nombre.ToLower() == villaCreateDto.Nombre.ToLower()))
+            if (_villaRepo.Obtener(v => v.Nombre.ToLower() == villaCreateDto.Nombre.ToLower())!=null)
             {
                 ModelState.AddModelError("NombreExiste", "La villa con ese nombre ya existe.");
                 return BadRequest(ModelState);
             }
              Villa villa = _mapper.Map<Villa>(villaCreateDto);
-            _db.Villas.Add(villa);
-            await _db.SaveChangesAsync();
+            await _villaRepo.Crear(villa);
             return CreatedAtAction(nameof(GetVilla), new { id = villa.Id }, villaCreateDto);
         }
         [HttpDelete("id:int")]
@@ -90,40 +90,45 @@ namespace Resort.Controllers
             {
                 return BadRequest();
             }
-            var villa = _db.Villas.FirstOrDefault(v => v.Id == id);
+            var villa = await _villaRepo.Obtener(v => v.Id == id);
             if (villa == null)
             {
                 return NotFound();
             }
-            _db.Villas.Remove(villa);
-            await _db.SaveChangesAsync();
+            await _villaRepo.Eliminar(villa);
             return NoContent();
         }
         [HttpPut("id:int")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> UpdateVilla(int id, [FromBody] VillaUpdateDto villaDto)
+        public async Task<ActionResult> UpdateVilla([FromBody] VillaUpdateDto villaDto)
         {
             if (ModelState.IsValid == false)
             {
                 return BadRequest(ModelState);
             }
-            if (id == 0 || villaDto == null || id != villaDto.Id)
+            if (villaDto == null )
             {
                 return BadRequest();
             }
-            var villa = _db.Villas.FirstOrDefault(v => v.Id == id);
-
+            if (villaDto.Id == 0)
+            {
+                return BadRequest();
+            }
+            var villa = await _villaRepo.Obtener(v => v.Id == villaDto.Id);
             if (villa == null)
             {
                 return NotFound();
             }
             _mapper.Map(villaDto, villa);
-            _db.Entry(villa).Property(x => x.RowVersion).OriginalValue = villaDto.RowVersion;
+
+            // ✅ establecer el valor original (clave)
+            _villaRepo.SetOriginalRowVersion(villa, villaDto.RowVersion);
+
             try
             {
-                await _db.SaveChangesAsync();
+                await _villaRepo.Grabar();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -136,37 +141,54 @@ namespace Resort.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> UpdatePartialVilla(int id, [FromBody] JsonPatchDocument<VillaUpdateDto> patchDoc)
+
+        [HttpPatch("{id:int}")]
+        public async Task<ActionResult> UpdatePartialVilla(
+    int id,
+    [FromBody] JsonPatchDocument<VillaUpdateDto> patchDoc,
+    [FromHeader(Name = "If-Match")] string rowVersionBase64)
         {
             if (patchDoc == null || id == 0)
-            {
                 return BadRequest();
-            }
-            var villa = await _db.Villas.FirstOrDefaultAsync(v => v.Id == id);
-                     
+
+            var villa = await _villaRepo.Obtener(v => v.Id == id, false);
 
             if (villa == null)
-            {
                 return NotFound();
-            }
-            VillaUpdateDto villaUpdateDto = _mapper.Map<VillaUpdateDto>(villa);
+
+            var villaUpdateDto = _mapper.Map<VillaUpdateDto>(villa);
+
             patchDoc.ApplyTo(villaUpdateDto, (Microsoft.AspNetCore.JsonPatch.Adapters.IObjectAdapter)ModelState);
 
             if (!ModelState.IsValid)
-            {
                 return BadRequest(ModelState);
-            }
 
-            _mapper.Map(villaUpdateDto,villa); 
-            _db.Entry(villa).Property(x => x.RowVersion).OriginalValue = villaUpdateDto.RowVersion;
+            // ✅ convertir RowVersion
+            byte[] originalRowVersion;
             try
             {
-                await _db.SaveChangesAsync();
+                originalRowVersion = Convert.FromBase64String(rowVersionBase64);
+            }
+            catch
+            {
+                return BadRequest("RowVersion inválido");
+            }
+
+            // ✅ establecer ORIGINAL
+            _villaRepo.SetOriginalRowVersion(villa, originalRowVersion);
+
+            // ✅ mapear cambios
+            _mapper.Map(villaUpdateDto, villa);
+
+            try
+            {
+                await _villaRepo.Actualizar(villa);
             }
             catch (DbUpdateConcurrencyException)
             {
                 return Conflict("La villa fue modificada por otro usuario");
             }
+
             return NoContent();
         }
     }

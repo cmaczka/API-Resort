@@ -1,6 +1,9 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Resort;
+using Resort.Modelos;
+using Resort.Repositorio;
+using Resort.Repositorio.IRepositorio;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +27,7 @@ builder.Services.AddAutoMapper(cfg =>
     cfg.AddProfile<MappingConfig>();
 });
 
+builder.Services.AddScoped<IVillaRepositorio, VillaRepositorio>();
 
 var app = builder.Build();
 

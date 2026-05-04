@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Resort.Modelos;
 
 namespace Resort.Datos
 {
@@ -11,6 +12,11 @@ namespace Resort.Datos
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+            modelBuilder.Entity<Villa>()
+                   .Property(v => v.RowVersion)
+                   .IsRowVersion(); // ✅ marca rowversion/concurrency token
+
             modelBuilder.Entity<Modelos.Villa>().HasData(
                 new Modelos.Villa
                 {

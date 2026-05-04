@@ -20,7 +20,7 @@ namespace Resort.Modelos.Dto
         public string Amenidad { get; set; }
 
         [Timestamp]
-        public byte[] RowVersion { get; set; }
+        public byte[] RowVersion { get; set; } = Array.Empty<byte>();
 
     }
 }

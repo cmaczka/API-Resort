@@ -14,12 +14,7 @@ namespace Resort.Repositorio
             _db = db;
             dbSet = _db.Set<T>();
         }
-        public async Task Actualizar(T entidad)
-        {
-            dbSet.Update(entidad);
-            await Grabar();
-        }
-
+     
         public async Task Crear(T entidad)
         {
             await dbSet.AddAsync(entidad);
@@ -31,8 +26,6 @@ namespace Resort.Repositorio
             dbSet.Remove(entidad);
             await Grabar();
         }
-        }
-
         public async Task Grabar()
         {
             await _db.SaveChangesAsync();
