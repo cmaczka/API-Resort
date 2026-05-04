@@ -19,107 +19,192 @@ namespace Resort.Controllers
         private readonly ILogger<ResortController> _logger;
         private readonly IVillaRepositorio _villaRepo;
         private readonly IMapper _mapper;
+        protected APIResponse _response;
         public ResortController(ILogger<ResortController> logger, IVillaRepositorio villaRepo, IMapper mapper)
         {
             _logger = logger;
             _mapper = mapper;
             _villaRepo = villaRepo;
+            _response = new APIResponse();
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<VillaDto>>> GetVillas()
+        public async Task<ActionResult<APIResponse>> GetVillas()
         {
-            _logger.LogInformation("Obteniendo todas las villas");
-            IEnumerable<Villa> villas = await _villaRepo.ObtenerTodos();
-            IEnumerable<VillaDto> villaDtos = _mapper.Map<IEnumerable<VillaDto>>(villas);
-            return Ok(villaDtos);
+            try
+            {
+                _logger.LogInformation("Obteniendo todas las villas");
+                IEnumerable<Villa> villas = await _villaRepo.ObtenerTodos();
+                IEnumerable<VillaDto> villaDtos = _mapper.Map<IEnumerable<VillaDto>>(villas);
+                _response.Resultado = villaDtos;
+                _response.StatusCode = System.Net.HttpStatusCode.OK;
+                return Ok(_response);
+            }
+            catch (Exception)
+            {
+                _response.IsExitoso = false;
+                _response.Errores = new List<string> { "Ocurrió un error al obtener las villas" };
+                _response.StatusCode = System.Net.HttpStatusCode.InternalServerError;
+                return StatusCode(StatusCodes.Status500InternalServerError, _response); 
+            }
+           
         }
         [HttpGet("id:int")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<VillaDto> GetVilla(int id)
+        public ActionResult<APIResponse> GetVilla(int id)
         {
-            if (id == 0)
+            try
             {
-                _logger.LogError("El id de la villa no puede ser 0");
-                return BadRequest();
-            }
-            var villa = _villaRepo.Obtener(v => v.Id == id);
-            if (villa == null)
-            {
-                return NotFound();
-            }
+                if (id == 0)
+                {
+                    _logger.LogError("El id de la villa no puede ser 0");
+                    _response.IsExitoso = false;
+                    _response.Errores = new List<string> { "El id de la villa no puede ser 0" };
+                    _response.StatusCode = System.Net.HttpStatusCode.BadRequest;
+                    return BadRequest(_response);
+                }
+                var villa = _villaRepo.Obtener(v => v.Id == id);
+                if (villa == null)
+                {
+                    _logger.LogError($"La villa con id {id} no fue encontrada");
+                    _response.IsExitoso = false;
+                    _response.Errores = new List<string> { $"La villa con id {id} no fue encontrada" };
+                    _response.StatusCode = System.Net.HttpStatusCode.NotFound;
+                    return NotFound(_response);
+                }
 
-            VillaDto villaDto = _mapper.Map<VillaDto>(villa);
-            return Ok(villaDto);
+                VillaDto villaDto = _mapper.Map<VillaDto>(villa);
+                _response.Resultado = villaDto;
+                _response.StatusCode = System.Net.HttpStatusCode.OK;
+                return Ok(_response);
+            }
+            catch (Exception)
+            {
+                _response.IsExitoso = false;
+                _response.Errores = new List<string> { "Ocurrió un error al obtener la villa" };
+                _response.StatusCode = System.Net.HttpStatusCode.InternalServerError;
+                return StatusCode(StatusCodes.Status500InternalServerError, _response);
+            }
+           
         }
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<VillaCreateDto>> CreateVilla([FromBody] VillaCreateDto villaCreateDto)
+        public async Task<ActionResult<APIResponse>> CreateVilla([FromBody] VillaCreateDto villaCreateDto)
         {
-            if (ModelState.IsValid == false)
+            try
             {
-                return BadRequest(ModelState);
-            }
+                if (ModelState.IsValid == false)
+                {
+                    _response.IsExitoso = false;
+                    _response.Errores = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+                    _response.StatusCode = System.Net.HttpStatusCode.BadRequest;
+                    return BadRequest(_response);
+                }
 
-            if (villaCreateDto == null)
+                if (villaCreateDto == null)
+                {
+                    _response.IsExitoso = false;
+                    _response.Errores = new List<string> { "El objeto villaCreateDto no puede ser null" };  
+                    _response.StatusCode = System.Net.HttpStatusCode.BadRequest;
+                    return BadRequest(_response);
+                }
+
+                if (_villaRepo.Obtener(v => v.Nombre.ToLower() == villaCreateDto.Nombre.ToLower()) != null)
+                {
+                    ModelState.AddModelError("NombreExiste", "La villa con ese nombre ya existe.");
+                    return BadRequest(ModelState);
+                }
+                Villa villa = _mapper.Map<Villa>(villaCreateDto);
+                await _villaRepo.Crear(villa);
+                _response.Resultado = villaCreateDto;
+                _response.StatusCode = System.Net.HttpStatusCode.Created;
+                return CreatedAtAction(nameof(GetVilla), new { id = villa.Id }, _response);
+            }
+            catch (Exception)
             {
-                return BadRequest();
+                _response.IsExitoso = false;
+                _response.Errores = new List<string> { "Ocurrió un error al crear la villa" };
+                _response.StatusCode = System.Net.HttpStatusCode.InternalServerError;
+                return StatusCode(StatusCodes.Status500InternalServerError, _response);
             }
             
-            if (_villaRepo.Obtener(v => v.Nombre.ToLower() == villaCreateDto.Nombre.ToLower())!=null)
-            {
-                ModelState.AddModelError("NombreExiste", "La villa con ese nombre ya existe.");
-                return BadRequest(ModelState);
-            }
-             Villa villa = _mapper.Map<Villa>(villaCreateDto);
-            await _villaRepo.Crear(villa);
-            return CreatedAtAction(nameof(GetVilla), new { id = villa.Id }, villaCreateDto);
         }
         [HttpDelete("id:int")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> DeleteVilla(int id)
+        public async Task<ActionResult<APIResponse>> DeleteVilla(int id)
         {
-            if (id == 0)
+            try
             {
-                return BadRequest();
+                if (id == 0)
+                {
+                    _response.IsExitoso = false;
+                    _response.Errores = new List<string> { "El id de la villa no puede ser 0" };
+                    _response.StatusCode = System.Net.HttpStatusCode.BadRequest;    
+                    return BadRequest(_response);
+                }
+                var villa = await _villaRepo.Obtener(v => v.Id == id);
+                if (villa == null)
+                {
+                    _response.IsExitoso = false;
+                    _response.Errores = new List<string> { $"La villa con id {id} no fue encontrada" };
+                    _response.StatusCode = System.Net.HttpStatusCode.NotFound;
+                    return NotFound(_response);
+                }
+                await _villaRepo.Eliminar(villa);
+                _response.IsExitoso = true;
+                _response.StatusCode = System.Net.HttpStatusCode.NoContent;
+                return Ok(_response);
             }
-            var villa = await _villaRepo.Obtener(v => v.Id == id);
-            if (villa == null)
+            catch (Exception)
             {
-                return NotFound();
+                _response.IsExitoso = false;
+                _response.Errores = new List<string> { "Ocurrió un error al eliminar la villa" };
+                _response.StatusCode = System.Net.HttpStatusCode.InternalServerError;
+                return StatusCode(StatusCodes.Status500InternalServerError, _response);
             }
-            await _villaRepo.Eliminar(villa);
-            return NoContent();
+           
         }
         [HttpPut("id:int")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> UpdateVilla([FromBody] VillaUpdateDto villaDto)
+        public async Task<ActionResult<APIResponse>> UpdateVilla([FromBody] VillaUpdateDto villaDto)
         {
             if (ModelState.IsValid == false)
             {
-                return BadRequest(ModelState);
+                _response.IsExitoso = false;
+                _response.Errores = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+                _response.StatusCode = System.Net.HttpStatusCode.BadRequest;    
+                return BadRequest(_response);
             }
             if (villaDto == null )
             {
-                return BadRequest();
+                _response.IsExitoso = false;
+                _response.Errores = new List<string> { "El objeto villaDto no puede ser null" };
+                _response.StatusCode = System.Net.HttpStatusCode.BadRequest;
+                return BadRequest(_response);
             }
             if (villaDto.Id == 0)
             {
-                return BadRequest();
+                _response.IsExitoso = false;
+                _response.Errores = new List<string> { "El id de la villa no puede ser 0" };
+                _response.StatusCode = System.Net.HttpStatusCode.BadRequest;
+                return BadRequest(_response);
             }
             var villa = await _villaRepo.Obtener(v => v.Id == villaDto.Id);
             if (villa == null)
             {
-                return NotFound();
+                _response.IsExitoso = false;
+                _response.Errores = new List<string> { $"La villa con id {villaDto.Id} no fue encontrada" };
+                _response.StatusCode = System.Net.HttpStatusCode.NotFound;
+                return NotFound(_response);
             }
             _mapper.Map(villaDto, villa);
 
@@ -132,10 +217,15 @@ namespace Resort.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                return Conflict("La villa fue modificada por otro usuario");
+                _response.IsExitoso = false;
+                _response.Errores = new List<string> { "La villa fue modificada por otro usuario" };
+                _response.StatusCode = System.Net.HttpStatusCode.Conflict;
+                return Conflict(_response);
             }
             
-            return NoContent();
+            _response.IsExitoso = true;
+            _response.StatusCode = System.Net.HttpStatusCode.NoContent;
+            return Ok(_response);
         }
         [HttpPatch("id:int")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
