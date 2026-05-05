@@ -14,13 +14,13 @@ namespace Resort.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
-    public class ResortController : ControllerBase
+    public class VillaController : ControllerBase
     {
-        private readonly ILogger<ResortController> _logger;
+        private readonly ILogger<VillaController> _logger;
         private readonly IVillaRepositorio _villaRepo;
         private readonly IMapper _mapper;
         protected APIResponse _response;
-        public ResortController(ILogger<ResortController> logger, IVillaRepositorio villaRepo, IMapper mapper)
+        public VillaController(ILogger<VillaController> logger, IVillaRepositorio villaRepo, IMapper mapper)
         {
             _logger = logger;
             _mapper = mapper;

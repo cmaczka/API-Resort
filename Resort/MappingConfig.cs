@@ -21,7 +21,7 @@ namespace Resort
                     opt => opt.MapFrom(src => Convert.ToBase64String(src.RowVersion)));
 
             CreateMap<NumeroVilla, NumeroVillaCreateDto>().ReverseMap();
-            CreateMap<NumeroVilla, NumeroVillaUdpateDto>().ReverseMap();
+            CreateMap<NumeroVilla, NumeroVillaUpdateDto>().ReverseMap();
             CreateMap<NumeroVilla, NumeroVillaDto>().ReverseMap();
 
 

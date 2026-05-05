@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Resort.Datos;
 
@@ -11,9 +12,11 @@ using Resort.Datos;
 namespace Resort.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20260505010401_AgregarRowVersionNumeroVilla")]
+    partial class AgregarRowVersionNumeroVilla
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -108,8 +111,8 @@ namespace Resort.Migrations
                             Id = 1,
                             Amenidad = "Amenidad de la Villa 1",
                             Detalle = "Detalle de la Villa 1",
-                            FechaActualizacion = new DateTime(2026, 5, 4, 22, 40, 19, 715, DateTimeKind.Local).AddTicks(1468),
-                            FechaCreacion = new DateTime(2026, 5, 4, 22, 40, 19, 715, DateTimeKind.Local).AddTicks(1453),
+                            FechaActualizacion = new DateTime(2026, 5, 4, 22, 4, 0, 515, DateTimeKind.Local).AddTicks(9888),
+                            FechaCreacion = new DateTime(2026, 5, 4, 22, 4, 0, 515, DateTimeKind.Local).AddTicks(9871),
                             ImageUrl = "https://example.com/villa1.jpg",
                             MetrosCuadrados = 50.0,
                             Nombre = "Villa 1",
@@ -122,8 +125,8 @@ namespace Resort.Migrations
                             Id = 2,
                             Amenidad = "Amenidad de la Villa 2",
                             Detalle = "Detalle de la Villa 2",
-                            FechaActualizacion = new DateTime(2026, 5, 4, 22, 40, 19, 715, DateTimeKind.Local).AddTicks(1470),
-                            FechaCreacion = new DateTime(2026, 5, 4, 22, 40, 19, 715, DateTimeKind.Local).AddTicks(1469),
+                            FechaActualizacion = new DateTime(2026, 5, 4, 22, 4, 0, 515, DateTimeKind.Local).AddTicks(9890),
+                            FechaCreacion = new DateTime(2026, 5, 4, 22, 4, 0, 515, DateTimeKind.Local).AddTicks(9890),
                             ImageUrl = "https://example.com/villa2.jpg",
                             MetrosCuadrados = 60.0,
                             Nombre = "Villa 2",
@@ -136,8 +139,8 @@ namespace Resort.Migrations
                             Id = 3,
                             Amenidad = "Amenidad de la Villa 3",
                             Detalle = "Detalle de la Villa 3",
-                            FechaActualizacion = new DateTime(2026, 5, 4, 22, 40, 19, 715, DateTimeKind.Local).AddTicks(1472),
-                            FechaCreacion = new DateTime(2026, 5, 4, 22, 40, 19, 715, DateTimeKind.Local).AddTicks(1471),
+                            FechaActualizacion = new DateTime(2026, 5, 4, 22, 4, 0, 515, DateTimeKind.Local).AddTicks(9892),
+                            FechaCreacion = new DateTime(2026, 5, 4, 22, 4, 0, 515, DateTimeKind.Local).AddTicks(9892),
                             ImageUrl = "https://example.com/villa3.jpg",
                             MetrosCuadrados = 70.0,
                             Nombre = "Villa 3",

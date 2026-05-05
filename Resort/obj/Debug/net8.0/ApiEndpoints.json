@@ -1,8 +1,8 @@
 [
   {
-    "ContainingType": "Resort.Controllers.ResortController",
-    "Method": "GetVillas",
-    "RelativePath": "api/Resort",
+    "ContainingType": "Resort.Controllers.NumeroVillaController",
+    "Method": "GetNumeroVillas",
+    "RelativePath": "api/NumeroVilla",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -20,16 +20,16 @@
     ]
   },
   {
-    "ContainingType": "Resort.Controllers.ResortController",
-    "Method": "CreateVilla",
-    "RelativePath": "api/Resort",
+    "ContainingType": "Resort.Controllers.NumeroVillaController",
+    "Method": "CreateNumeroVilla",
+    "RelativePath": "api/NumeroVilla",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "villaCreateDto",
-        "Type": "Resort.Modelos.Dto.VillaCreateDto",
+        "Name": "numeroVillaCreateDto",
+        "Type": "Resort.Modelos.Dto.NumeroVillaCreateDto",
         "IsRequired": true
       }
     ],
@@ -60,9 +60,9 @@
     ]
   },
   {
-    "ContainingType": "Resort.Controllers.ResortController",
+    "ContainingType": "Resort.Controllers.NumeroVillaController",
     "Method": "UpdatePartialVilla",
-    "RelativePath": "api/Resort/{id}",
+    "RelativePath": "api/NumeroVilla/{id}",
     "HttpMethod": "PATCH",
     "IsController": true,
     "Order": 0,
@@ -110,9 +110,9 @@
     ]
   },
   {
-    "ContainingType": "Resort.Controllers.ResortController",
-    "Method": "GetVilla",
-    "RelativePath": "api/Resort/id:int",
+    "ContainingType": "Resort.Controllers.NumeroVillaController",
+    "Method": "GetNumeroVilla",
+    "RelativePath": "api/NumeroVilla/id:int",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -154,9 +154,9 @@
     ]
   },
   {
-    "ContainingType": "Resort.Controllers.ResortController",
+    "ContainingType": "Resort.Controllers.NumeroVillaController",
     "Method": "DeleteVilla",
-    "RelativePath": "api/Resort/id:int",
+    "RelativePath": "api/NumeroVilla/id:int",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
@@ -194,9 +194,288 @@
     ]
   },
   {
-    "ContainingType": "Resort.Controllers.ResortController",
+    "ContainingType": "Resort.Controllers.NumeroVillaController",
+    "Method": "UpdateNumeroVilla",
+    "RelativePath": "api/NumeroVilla/id:int",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "numeroVillaDto",
+        "Type": "Resort.Modelos.Dto.NumeroVillaUpdateDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 204
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 400
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 404
+      }
+    ]
+  },
+  {
+    "ContainingType": "Resort.Controllers.NumeroVillaController",
+    "Method": "UpdatePartialVilla",
+    "RelativePath": "api/NumeroVilla/id:int",
+    "HttpMethod": "PATCH",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "patchDoc",
+        "Type": "Microsoft.AspNetCore.JsonPatch.JsonPatchDocument\u00601[[Resort.Modelos.Dto.VillaUpdateDto, Resort, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": true
+      },
+      {
+        "Name": "If-Match",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 204
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 400
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 404
+      }
+    ]
+  },
+  {
+    "ContainingType": "Resort.Controllers.VillaController",
+    "Method": "GetVillas",
+    "RelativePath": "api/Villa",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "Resort.Modelos.APIResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Resort.Controllers.VillaController",
+    "Method": "CreateVilla",
+    "RelativePath": "api/Villa",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "villaCreateDto",
+        "Type": "Resort.Modelos.Dto.VillaCreateDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Resort.Modelos.APIResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 201
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 400
+      },
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 500
+      }
+    ]
+  },
+  {
+    "ContainingType": "Resort.Controllers.VillaController",
+    "Method": "UpdatePartialVilla",
+    "RelativePath": "api/Villa/{id}",
+    "HttpMethod": "PATCH",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "patchDoc",
+        "Type": "Microsoft.AspNetCore.JsonPatch.JsonPatchDocument\u00601[[Resort.Modelos.Dto.VillaUpdateDto, Resort, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": true
+      },
+      {
+        "Name": "If-Match",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 204
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 400
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 404
+      }
+    ]
+  },
+  {
+    "ContainingType": "Resort.Controllers.VillaController",
+    "Method": "GetVilla",
+    "RelativePath": "api/Villa/id:int",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Resort.Modelos.APIResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 400
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 404
+      }
+    ]
+  },
+  {
+    "ContainingType": "Resort.Controllers.VillaController",
+    "Method": "DeleteVilla",
+    "RelativePath": "api/Villa/id:int",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 204
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 400
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 404
+      }
+    ]
+  },
+  {
+    "ContainingType": "Resort.Controllers.VillaController",
     "Method": "UpdateVilla",
-    "RelativePath": "api/Resort/id:int",
+    "RelativePath": "api/Villa/id:int",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
@@ -234,9 +513,9 @@
     ]
   },
   {
-    "ContainingType": "Resort.Controllers.ResortController",
+    "ContainingType": "Resort.Controllers.VillaController",
     "Method": "UpdatePartialVilla",
-    "RelativePath": "api/Resort/id:int",
+    "RelativePath": "api/Villa/id:int",
     "HttpMethod": "PATCH",
     "IsController": true,
     "Order": 0,
