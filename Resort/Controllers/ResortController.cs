@@ -120,6 +120,8 @@ namespace Resort.Controllers
                     return BadRequest(ModelState);
                 }
                 Villa villa = _mapper.Map<Villa>(villaCreateDto);
+                villa.FechaCreacion = DateTime.Now;
+                villa.FechaActualizacion = DateTime.Now;
                 await _villaRepo.Crear(villa);
                 _response.Resultado = villaCreateDto;
                 _response.StatusCode = System.Net.HttpStatusCode.Created;

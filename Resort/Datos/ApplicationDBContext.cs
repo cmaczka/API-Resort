@@ -9,6 +9,7 @@ namespace Resort.Datos
         {
         }
         public DbSet<Modelos.Villa> Villas { get; set; }
+        public DbSet<Modelos.NumeroVilla> NumeroVillas { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

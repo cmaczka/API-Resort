@@ -1,0 +1,14 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Resort.Modelos.Dto
+{
+    public class NumeroVillaUdpateDto
+    {
+        [Required]
+        public int VillaNo { get; set; }
+
+        [Required]
+        public int VillaId { get; set; }
+        public string DetalleEspecial { get; set; }
+    }
+}

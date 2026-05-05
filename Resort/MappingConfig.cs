@@ -20,6 +20,11 @@ namespace Resort
                 .ForMember(dest => dest.RowVersion,
                     opt => opt.MapFrom(src => Convert.ToBase64String(src.RowVersion)));
 
+            CreateMap<NumeroVilla, NumeroVillaCreateDto>().ReverseMap();
+            CreateMap<NumeroVilla, NumeroVillaUdpateDto>().ReverseMap();
+            CreateMap<NumeroVilla, NumeroVillaDto>().ReverseMap();
+
+
         }
 
     }
