@@ -4402,9 +4402,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Udemy\\API\\Resort\\Resort\\Resort.csproj",
-      "projectName": "Resort",
-      "projectPath": "D:\\Udemy\\API\\Resort\\Resort\\Resort.csproj",
+      "projectUniqueName": "D:\\Udemy\\API\\Resort\\Resort\\MagicVilla_API.csproj",
+      "projectName": "MagicVilla_API",
+      "projectPath": "D:\\Udemy\\API\\Resort\\Resort\\MagicVilla_API.csproj",
       "packagesPath": "C:\\Users\\cmacz\\.nuget\\packages\\",
       "outputPath": "D:\\Udemy\\API\\Resort\\Resort\\obj\\",
       "projectStyle": "PackageReference",

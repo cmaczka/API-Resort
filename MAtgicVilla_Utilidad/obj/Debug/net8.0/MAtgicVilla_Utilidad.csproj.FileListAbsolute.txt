@@ -1,0 +1,12 @@
+D:\Udemy\API\Resort\MAtgicVilla_Utilidad\bin\Debug\net8.0\MAtgicVilla_Utilidad.deps.json
+D:\Udemy\API\Resort\MAtgicVilla_Utilidad\bin\Debug\net8.0\MAtgicVilla_Utilidad.dll
+D:\Udemy\API\Resort\MAtgicVilla_Utilidad\bin\Debug\net8.0\MAtgicVilla_Utilidad.pdb
+D:\Udemy\API\Resort\MAtgicVilla_Utilidad\obj\Debug\net8.0\MAtgicVilla_Utilidad.GeneratedMSBuildEditorConfig.editorconfig
+D:\Udemy\API\Resort\MAtgicVilla_Utilidad\obj\Debug\net8.0\MAtgicVilla_Utilidad.AssemblyInfoInputs.cache
+D:\Udemy\API\Resort\MAtgicVilla_Utilidad\obj\Debug\net8.0\MAtgicVilla_Utilidad.AssemblyInfo.cs
+D:\Udemy\API\Resort\MAtgicVilla_Utilidad\obj\Debug\net8.0\MAtgicVilla_Utilidad.csproj.CoreCompileInputs.cache
+D:\Udemy\API\Resort\MAtgicVilla_Utilidad\obj\Debug\net8.0\MAtgicVilla_Utilidad.sourcelink.json
+D:\Udemy\API\Resort\MAtgicVilla_Utilidad\obj\Debug\net8.0\MAtgicVilla_Utilidad.dll
+D:\Udemy\API\Resort\MAtgicVilla_Utilidad\obj\Debug\net8.0\refint\MAtgicVilla_Utilidad.dll
+D:\Udemy\API\Resort\MAtgicVilla_Utilidad\obj\Debug\net8.0\MAtgicVilla_Utilidad.pdb
+D:\Udemy\API\Resort\MAtgicVilla_Utilidad\obj\Debug\net8.0\ref\MAtgicVilla_Utilidad.dll

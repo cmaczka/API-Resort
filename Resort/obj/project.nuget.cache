@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "D6h0tSV4OTs=",
+  "dgSpecHash": "8JcCM55l86U=",
   "success": true,
-  "projectFilePath": "D:\\Udemy\\API\\Resort\\Resort\\Resort.csproj",
+  "projectFilePath": "D:\\Udemy\\API\\Resort\\Resort\\MagicVilla_API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\cmacz\\.nuget\\packages\\automapper\\16.1.1\\automapper.16.1.1.nupkg.sha512",
     "C:\\Users\\cmacz\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
