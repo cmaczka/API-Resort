@@ -481,6 +481,11 @@
     "Order": 0,
     "Parameters": [
       {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
         "Name": "villaDto",
         "Type": "Resort.Modelos.Dto.VillaUpdateDto",
         "IsRequired": true

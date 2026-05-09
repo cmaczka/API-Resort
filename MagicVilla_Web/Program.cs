@@ -1,9 +1,14 @@
 using MagicVilla_Web;
+using MagicVilla_Web.Services;
+using MagicVilla_Web.Services.IService;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddHttpClient<IVillaService,VillaService>();
+builder.Services.AddScoped<IVillaService, VillaService>();
 
 builder.Services.AddAutoMapper(cfg =>
 {
