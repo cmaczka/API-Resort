@@ -51,7 +51,7 @@ namespace Resort.Controllers
             }
            
         }
-        [HttpGet("id:int")]
+        [HttpGet("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -148,7 +148,7 @@ namespace Resort.Controllers
             }
             
         }
-        [HttpDelete("id:int")]
+        [HttpDelete("{id:int}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -185,7 +185,7 @@ namespace Resort.Controllers
             }
            
         }
-        [HttpPut("id:int")]
+        [HttpPut("{id:int}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -248,12 +248,10 @@ namespace Resort.Controllers
             _response.StatusCode = System.Net.HttpStatusCode.NoContent;
             return Ok(_response);
         }
-        [HttpPatch("id:int")]
+        [HttpPatch("{id:int}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-
-        [HttpPatch("{id:int}")]
         public async Task<ActionResult> UpdatePartialVilla(
     int id,
     [FromBody] JsonPatchDocument<VillaUpdateDto> patchDoc,

@@ -10,6 +10,10 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient<IVillaService,VillaService>();
 builder.Services.AddScoped<IVillaService, VillaService>();
 
+builder.Services.AddHttpClient<INumeroVillaService, NumeroVillaService>();
+builder.Services.AddScoped<INumeroVillaService, NumeroVillaService>();  
+
+
 builder.Services.AddAutoMapper(cfg =>
 {
     cfg.AddProfile<MappingConfig>();
