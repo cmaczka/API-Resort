@@ -61,58 +61,8 @@
   },
   {
     "ContainingType": "Resort.Controllers.NumeroVillaController",
-    "Method": "UpdatePartialVilla",
-    "RelativePath": "api/NumeroVilla/{id}",
-    "HttpMethod": "PATCH",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      },
-      {
-        "Name": "patchDoc",
-        "Type": "Microsoft.AspNetCore.JsonPatch.JsonPatchDocument\u00601[[Resort.Modelos.Dto.VillaUpdateDto, MagicVilla_API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "IsRequired": true
-      },
-      {
-        "Name": "If-Match",
-        "Type": "System.String",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 204
-      },
-      {
-        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 400
-      },
-      {
-        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 404
-      }
-    ]
-  },
-  {
-    "ContainingType": "Resort.Controllers.NumeroVillaController",
     "Method": "GetNumeroVilla",
-    "RelativePath": "api/NumeroVilla/id:int",
+    "RelativePath": "api/NumeroVilla/{id}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -120,7 +70,7 @@
       {
         "Name": "id",
         "Type": "System.Int32",
-        "IsRequired": false
+        "IsRequired": true
       }
     ],
     "ReturnTypes": [
@@ -156,7 +106,7 @@
   {
     "ContainingType": "Resort.Controllers.NumeroVillaController",
     "Method": "DeleteVilla",
-    "RelativePath": "api/NumeroVilla/id:int",
+    "RelativePath": "api/NumeroVilla/{id}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
@@ -164,7 +114,7 @@
       {
         "Name": "id",
         "Type": "System.Int32",
-        "IsRequired": false
+        "IsRequired": true
       }
     ],
     "ReturnTypes": [
@@ -196,7 +146,7 @@
   {
     "ContainingType": "Resort.Controllers.NumeroVillaController",
     "Method": "UpdateNumeroVilla",
-    "RelativePath": "api/NumeroVilla/id:int",
+    "RelativePath": "api/NumeroVilla/{id}",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
@@ -204,6 +154,11 @@
       {
         "Name": "numeroVillaDto",
         "Type": "Resort.Modelos.Dto.NumeroVillaUpdateDto",
+        "IsRequired": true
+      },
+      {
+        "Name": "id",
+        "Type": "",
         "IsRequired": true
       }
     ],
@@ -236,11 +191,16 @@
   {
     "ContainingType": "Resort.Controllers.NumeroVillaController",
     "Method": "UpdatePartialVilla",
-    "RelativePath": "api/NumeroVilla/id:int",
+    "RelativePath": "api/NumeroVilla/{id}",
     "HttpMethod": "PATCH",
     "IsController": true,
     "Order": 0,
     "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
       {
         "Name": "patchDoc",
         "Type": "Microsoft.AspNetCore.JsonPatch.JsonPatchDocument\u00601[[Resort.Modelos.Dto.VillaUpdateDto, MagicVilla_API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",

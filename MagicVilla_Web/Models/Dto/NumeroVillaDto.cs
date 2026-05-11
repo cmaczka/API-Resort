@@ -7,10 +7,10 @@ namespace MagicVilla_Web.Models
     {
         [Required]
         public int VillaNo { get; set; }
-
-        [Required, ForeignKey("Villa")]
+        [Required]
         public int VillaId { get; set; }
         public string DetalleEspecial { get; set; }
 
+        public VillaDto Villa { get; set; }
     }
 }
