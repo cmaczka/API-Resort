@@ -30,7 +30,7 @@
                <td>@item.Tarifa.ToString("c")</td>
                <td>
                         <a asp-controller="Villa" asp-action="ActualizarVilla" asp-route-villaId="@item.Id" class="btn btn-outline-primary"><i class="bi bi-pencil-square"></i>Editar</a>
-                        <a asp-controller="Villa" asp-action="EliminarVilla" asp-route-villaId="@item.Id" class="btn btn-outline-danger"><i class="bi bi-trash-fill"></i>Eliminar</a>
+                        <a asp-controller="Villa" asp-action="RemoverVilla" asp-route-villaId="@item.Id" class="btn btn-outline-danger"><i class="bi bi-trash-fill"></i>Eliminar</a>
                </td>
            </tr>
        }

@@ -9,9 +9,9 @@ namespace MagicVilla_Web.Controllers
 {
     public class VillaController : Controller
     {
-        private readonly IVillaService _villaService; 
+        private readonly IVillaService _villaService;
         private readonly IMapper _mapper;
-        public VillaController(IVillaService villaService, IMapper mapper) 
+        public VillaController(IVillaService villaService, IMapper mapper)
         {
             _villaService = villaService;
             _mapper = mapper;
@@ -30,19 +30,19 @@ namespace MagicVilla_Web.Controllers
         {
             return View();
         }
-         [HttpPost]
-         [ValidateAntiForgeryToken]
-         public async Task<IActionResult> CreateVilla(VillaCreateDto model)
-         {
-                if (ModelState.IsValid)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateVilla(VillaCreateDto model)
+        {
+            if (ModelState.IsValid)
+            {
+                var response = await _villaService.CreateAsync<APIResponse>(model);
+                if (response != null && response.IsExitoso)
                 {
-                    var response = await _villaService.CreateAsync<APIResponse>(model);
-                    if (response != null && response.IsExitoso)
-                    {
-                        return RedirectToAction(nameof(IndexVilla));
-                    }
+                    return RedirectToAction(nameof(IndexVilla));
                 }
-                return View(model);
+            }
+            return View(model);
         }
         public async Task<IActionResult> ActualizarVilla(int villaId)
         {
@@ -51,7 +51,6 @@ namespace MagicVilla_Web.Controllers
             if (response != null && response.IsExitoso)
             {
                 VillaDto model = JsonConvert.DeserializeObject<VillaDto>(Convert.ToString(response.Resultado));
-                var tmp = _mapper.Map<VillaUpdateDto>(model);
                 return View(_mapper.Map<VillaUpdateDto>(model));
             }
             return NotFound();
@@ -70,6 +69,29 @@ namespace MagicVilla_Web.Controllers
             }
             return View(modelo);
         }
+        public async Task<IActionResult> RemoverVilla(int villaId)
+        {
+            var response = await _villaService.GetAsync<APIResponse>(villaId);
+
+            if (response != null && response.IsExitoso)
+            {
+                VillaDto model = JsonConvert.DeserializeObject<VillaDto>(Convert.ToString(response.Resultado));
+                return View(model);
+            }
+            return NotFound();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RemoverVilla(VillaDto modelo)
+        {
+            var response = await _villaService.DeleteAsync<APIResponse>(modelo.Id);
+            if (response != null && response.IsExitoso)
+            {
+                return RedirectToAction(nameof(IndexVilla));
+            }
+            return View(modelo);
+        }
+
 
     }
 }
