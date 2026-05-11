@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MagicVilla_Web.Models;
+using MagicVilla_Web.Models.Dto;
 using MagicVilla_Web.Services.IService;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -25,5 +26,50 @@ namespace MagicVilla_Web.Controllers
             }
             return View(villaList);
         }
+        public async Task<IActionResult> CreateVilla()
+        {
+            return View();
+        }
+         [HttpPost]
+         [ValidateAntiForgeryToken]
+         public async Task<IActionResult> CreateVilla(VillaCreateDto model)
+         {
+                if (ModelState.IsValid)
+                {
+                    var response = await _villaService.CreateAsync<APIResponse>(model);
+                    if (response != null && response.IsExitoso)
+                    {
+                        return RedirectToAction(nameof(IndexVilla));
+                    }
+                }
+                return View(model);
+        }
+        public async Task<IActionResult> ActualizarVilla(int villaId)
+        {
+            var response = await _villaService.GetAsync<APIResponse>(villaId);
+
+            if (response != null && response.IsExitoso)
+            {
+                VillaDto model = JsonConvert.DeserializeObject<VillaDto>(Convert.ToString(response.Resultado));
+                var tmp = _mapper.Map<VillaUpdateDto>(model);
+                return View(_mapper.Map<VillaUpdateDto>(model));
+            }
+            return NotFound();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ActualizarVilla(VillaUpdateDto modelo)
+        {
+            if (ModelState.IsValid)
+            {
+                var response = await _villaService.UpdateAsync<APIResponse>(modelo);
+                if (response != null && response.IsExitoso)
+                {
+                    return RedirectToAction(nameof(IndexVilla));
+                }
+            }
+            return View(modelo);
+        }
+
     }
 }

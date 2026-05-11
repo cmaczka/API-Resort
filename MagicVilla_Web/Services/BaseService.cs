@@ -48,18 +48,36 @@ namespace MagicVilla_Web.Services
 
                 var apiContent = await apiResponse.Content.ReadAsStringAsync();
                 var apiResponseDTO = JsonConvert.DeserializeObject<APIResponse>(apiContent);
-                if (apiResponseDTO != null && apiResponseDTO.IsExitoso)
-                {
-                    var apiResult = JsonConvert.SerializeObject(apiResponseDTO.Resultado);
-                    var apiResultDTO = JsonConvert.DeserializeObject<T>(apiResult);
-                    return apiResultDTO;
-                }
-                else
-                {
-                    var apiResult = JsonConvert.SerializeObject(apiResponseDTO);
-                    var apiResultDTO = JsonConvert.DeserializeObject<T>(apiResult);
-                    return apiResultDTO;
-                }
+
+                // 1) Intentar leer wrapper
+                var wrapper = JsonConvert.DeserializeObject<APIResponse>(apiContent);
+
+                // 2) Si el caller pidió APIResponse, devolvés el wrapper completo
+                if (typeof(T) == typeof(APIResponse))
+                    return (T)(object)wrapper;
+
+                // 3) Si wrapper OK y exitoso: devolvés Resultado como T
+
+                if (wrapper != null && wrapper.IsExitoso)
+                    return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(wrapper.Resultado));
+
+
+                //4) Si no fue exitoso: devolvés el wrapper como T(por si T es APIResponse o compatible)
+                return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(wrapper));
+
+
+                //if (apiResponseDTO != null && apiResponseDTO.IsExitoso)
+                //{
+                //    var apiResult = JsonConvert.SerializeObject(apiResponseDTO.Resultado);
+                //    var apiResultDTO = JsonConvert.DeserializeObject<T>(apiResult);
+                //    return apiResultDTO;
+                //}
+                //else
+                //{
+                //    var apiResult = JsonConvert.SerializeObject(apiResponseDTO);
+                //    var apiResultDTO = JsonConvert.DeserializeObject<T>(apiResult);
+                //    return apiResultDTO;
+                //}
             }
             catch (Exception ex)
             {

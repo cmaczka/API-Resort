@@ -9,6 +9,7 @@ namespace Resort.Modelos
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+        [Required]
         public string Nombre { get; set; }
         public string Detalle { get; set; }
         [Required]
@@ -21,7 +22,7 @@ namespace Resort.Modelos
         public DateTime FechaActualizacion { get; set; }
 
         [Timestamp]
-        public byte[] RowVersion { get; set; } = Array.Empty<byte>();
+        public byte[] RowVersion { get; set; }
 
     }
 }

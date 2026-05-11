@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MagicVilla_Web.Models
+namespace MagicVilla_Web.Models.Dto
 {
     public class VillaUpdateDto
     {
@@ -20,7 +20,6 @@ namespace MagicVilla_Web.Models
         public string Amenidad { get; set; }
 
         [Timestamp]
-        public byte[] RowVersion { get; set; } = Array.Empty<byte>();
-
+        public byte[] RowVersion { get; set; }
     }
 }

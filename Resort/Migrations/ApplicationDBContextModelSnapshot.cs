@@ -8,7 +8,7 @@ using Resort.Datos;
 
 #nullable disable
 
-namespace Resort.Migrations
+namespace MagicVilla_API.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
     partial class ApplicationDBContextModelSnapshot : ModelSnapshot
@@ -28,7 +28,6 @@ namespace Resort.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("DetalleEspecial")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("FechaCreacion")
@@ -39,7 +38,6 @@ namespace Resort.Migrations
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
-                        .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
@@ -62,11 +60,9 @@ namespace Resort.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Amenidad")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Detalle")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("FechaActualizacion")
@@ -76,7 +72,6 @@ namespace Resort.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ImageUrl")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("MetrosCuadrados")
@@ -91,7 +86,6 @@ namespace Resort.Migrations
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
-                        .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
@@ -108,13 +102,12 @@ namespace Resort.Migrations
                             Id = 1,
                             Amenidad = "Amenidad de la Villa 1",
                             Detalle = "Detalle de la Villa 1",
-                            FechaActualizacion = new DateTime(2026, 5, 4, 22, 40, 19, 715, DateTimeKind.Local).AddTicks(1468),
-                            FechaCreacion = new DateTime(2026, 5, 4, 22, 40, 19, 715, DateTimeKind.Local).AddTicks(1453),
+                            FechaActualizacion = new DateTime(2026, 5, 8, 23, 14, 31, 5, DateTimeKind.Local).AddTicks(2383),
+                            FechaCreacion = new DateTime(2026, 5, 8, 23, 14, 31, 5, DateTimeKind.Local).AddTicks(2366),
                             ImageUrl = "https://example.com/villa1.jpg",
                             MetrosCuadrados = 50.0,
                             Nombre = "Villa 1",
                             Ocupantes = 3,
-                            RowVersion = new byte[0],
                             Tarifa = 100.0
                         },
                         new
@@ -122,13 +115,12 @@ namespace Resort.Migrations
                             Id = 2,
                             Amenidad = "Amenidad de la Villa 2",
                             Detalle = "Detalle de la Villa 2",
-                            FechaActualizacion = new DateTime(2026, 5, 4, 22, 40, 19, 715, DateTimeKind.Local).AddTicks(1470),
-                            FechaCreacion = new DateTime(2026, 5, 4, 22, 40, 19, 715, DateTimeKind.Local).AddTicks(1469),
+                            FechaActualizacion = new DateTime(2026, 5, 8, 23, 14, 31, 5, DateTimeKind.Local).AddTicks(2385),
+                            FechaCreacion = new DateTime(2026, 5, 8, 23, 14, 31, 5, DateTimeKind.Local).AddTicks(2384),
                             ImageUrl = "https://example.com/villa2.jpg",
                             MetrosCuadrados = 60.0,
                             Nombre = "Villa 2",
                             Ocupantes = 4,
-                            RowVersion = new byte[0],
                             Tarifa = 150.0
                         },
                         new
@@ -136,13 +128,12 @@ namespace Resort.Migrations
                             Id = 3,
                             Amenidad = "Amenidad de la Villa 3",
                             Detalle = "Detalle de la Villa 3",
-                            FechaActualizacion = new DateTime(2026, 5, 4, 22, 40, 19, 715, DateTimeKind.Local).AddTicks(1472),
-                            FechaCreacion = new DateTime(2026, 5, 4, 22, 40, 19, 715, DateTimeKind.Local).AddTicks(1471),
+                            FechaActualizacion = new DateTime(2026, 5, 8, 23, 14, 31, 5, DateTimeKind.Local).AddTicks(2386),
+                            FechaCreacion = new DateTime(2026, 5, 8, 23, 14, 31, 5, DateTimeKind.Local).AddTicks(2386),
                             ImageUrl = "https://example.com/villa3.jpg",
                             MetrosCuadrados = 70.0,
                             Nombre = "Villa 3",
                             Ocupantes = 5,
-                            RowVersion = new byte[0],
                             Tarifa = 200.0
                         });
                 });

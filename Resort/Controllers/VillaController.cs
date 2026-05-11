@@ -7,6 +7,7 @@ using Resort.Modelos.Dto;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using Resort.Repositorio.IRepositorio;
+using System.Threading.Tasks;
 
 namespace Resort.Controllers
 {
@@ -49,11 +50,11 @@ namespace Resort.Controllers
             }
            
         }
-        [HttpGet("id:int")]
+        [HttpGet("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<APIResponse> GetVilla(int id)
+        public async Task<ActionResult<APIResponse>> GetVilla(int id)
         {
             try
             {
@@ -65,7 +66,7 @@ namespace Resort.Controllers
                     _response.StatusCode = System.Net.HttpStatusCode.BadRequest;
                     return BadRequest(_response);
                 }
-                var villa = _villaRepo.Obtener(v => v.Id == id);
+                var villa = await _villaRepo.Obtener(v => v.Id == id);
                 if (villa == null)
                 {
                     _logger.LogError($"La villa con id {id} no fue encontrada");
@@ -80,7 +81,7 @@ namespace Resort.Controllers
                 _response.StatusCode = System.Net.HttpStatusCode.OK;
                 return Ok(_response);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 _response.IsExitoso = false;
                 _response.Errores = new List<string> { "Ocurrió un error al obtener la villa" };
@@ -114,7 +115,7 @@ namespace Resort.Controllers
                     return BadRequest(_response);
                 }
 
-                if (_villaRepo.Obtener(v => v.Nombre.ToLower() == villaCreateDto.Nombre.ToLower()) != null)
+                if (_villaRepo.Obtener(v => v.Nombre.ToLower() == villaCreateDto.Nombre.ToLower()).Result != null)
                 {
                     ModelState.AddModelError("NombreExiste", "La villa con ese nombre ya existe.");
                     return BadRequest(ModelState);
@@ -136,7 +137,7 @@ namespace Resort.Controllers
             }
             
         }
-        [HttpDelete("id:int")]
+        [HttpDelete("{id:int}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -173,7 +174,7 @@ namespace Resort.Controllers
             }
            
         }
-        [HttpPut("id:int")]
+        [HttpPut("{id:int}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -217,7 +218,7 @@ namespace Resort.Controllers
             {
                 await _villaRepo.Grabar();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException ex)
             {
                 _response.IsExitoso = false;
                 _response.Errores = new List<string> { "La villa fue modificada por otro usuario" };
@@ -229,16 +230,14 @@ namespace Resort.Controllers
             _response.StatusCode = System.Net.HttpStatusCode.NoContent;
             return Ok(_response);
         }
-        [HttpPatch("id:int")]
+        [HttpPatch("{id:int}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-
-        [HttpPatch("{id:int}")]
         public async Task<ActionResult> UpdatePartialVilla(
-    int id,
-    [FromBody] JsonPatchDocument<VillaUpdateDto> patchDoc,
-    [FromHeader(Name = "If-Match")] string rowVersionBase64)
+            int id,
+            [FromBody] JsonPatchDocument<VillaUpdateDto> patchDoc,
+            [FromHeader(Name = "If-Match")] string rowVersionBase64)
         {
             if (patchDoc == null || id == 0)
                 return BadRequest();
