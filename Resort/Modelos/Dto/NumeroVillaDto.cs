@@ -8,10 +8,10 @@ namespace Resort.Modelos.Dto
         [Required]
         public int VillaNo { get; set; }
 
-        [Required, ForeignKey("Villa")]
+        [Required]
         public int VillaId { get; set; }
         public string DetalleEspecial { get; set; }
-        public Villa Villa { get; set; }
+        public VillaDto Villa { get; set; }
 
     }
 }

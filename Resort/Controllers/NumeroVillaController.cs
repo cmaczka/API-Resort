@@ -36,7 +36,7 @@ namespace Resort.Controllers
             try
             {
                 _logger.LogInformation("Obteniendo todos los números de villa");
-                IEnumerable<NumeroVilla> numeroVillas = await _numeroVillaRepo.ObtenerTodos();
+                IEnumerable<NumeroVilla> numeroVillas = await _numeroVillaRepo.ObtenerTodos(incluirPropiedades:"Villa");
                 IEnumerable<NumeroVillaDto> numeroVillaDtos = _mapper.Map<IEnumerable<NumeroVillaDto>>(numeroVillas);
                 _response.Resultado = numeroVillaDtos;
                 _response.StatusCode = System.Net.HttpStatusCode.OK;
@@ -67,7 +67,7 @@ namespace Resort.Controllers
                     _response.StatusCode = System.Net.HttpStatusCode.BadRequest;
                     return BadRequest(_response);
                 }
-                var numeroVilla = _numeroVillaRepo.Obtener(v => v.VillaId == id);
+                var numeroVilla = _numeroVillaRepo.Obtener(v => v.VillaId == id, incluirPropiedades: "Villa");
                 if (numeroVilla == null)
                 {
                     _logger.LogError($"El número de villa con id {id} no fue encontrado");
