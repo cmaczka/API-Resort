@@ -36,8 +36,12 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Udemy/API/Resort/MagicVilla_Web/Views/NumeroVilla/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTnVtZXJvVmlsbGFcSW5kZXguY3NodG1s
+[D:/Udemy/API/Resort/MagicVilla_Web/Views/NumeroVilla/CrearNumeroVilla.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTnVtZXJvVmlsbGFcQ3JlYXJOdW1lcm9WaWxsYS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Udemy/API/Resort/MagicVilla_Web/Views/NumeroVilla/IndexNumeroVilla.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTnVtZXJvVmlsbGFcSW5kZXhOdW1lcm9WaWxsYS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/Udemy/API/Resort/MagicVilla_Web/Views/Shared/Error.cshtml]
