@@ -31,16 +31,16 @@ namespace MagicVilla_Web.Controllers
             }
             return View(numeroVillalist);
         }
-        public async Task<IActionResult> CreateNumeroVilla()
-        {
-            return View();
-        }
-        public async Task<IActionResult> CrearNumeroVilla(NumeroVillaViewModel model)
+        //public async Task<IActionResult> CreateNumeroVilla()
+        //{
+        //    return View();
+        //}
+        public async Task<IActionResult> CrearNumeroVilla()
         {
             NumeroVillaViewModel numeroVillaVM = new();
             var response = await _villaService.GetAllAsync<APIResponse>();
 
-            if(response != null && response.IsExitoso)
+            if (response != null && response.IsExitoso)
             {
                 numeroVillaVM.VillaList = JsonConvert.DeserializeObject<List<VillaDto>>(Convert.ToString(response.Resultado)).Select(i => new SelectListItem
                 {
@@ -51,6 +51,63 @@ namespace MagicVilla_Web.Controllers
             //await _numeroVillaService.CreateAsync(model.NumeroVilla);
 
             return View(numeroVillaVM);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CrearNumeroVilla(NumeroVillaViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var response = await _numeroVillaService.CreateAsync<APIResponse>(model.NumeroVilla);
+                if (response != null && response.IsExitoso)
+                {
+                    return RedirectToAction(nameof(IndexNumeroVilla));
+                }
+                else
+                {
+                    if (response.Errores.Count > 0)
+                    {
+                        foreach (var error in response.Errores)
+                        {
+                            ModelState.AddModelError("Error", error);
+                        }
+                    }
+                }
+            }
+            var villaResponse = await _villaService.GetAllAsync<APIResponse>();
+            if (villaResponse != null && villaResponse.IsExitoso)
+            {
+                model.VillaList = JsonConvert.DeserializeObject<List<VillaDto>>(Convert.ToString(villaResponse.Resultado)).Select(i => new SelectListItem
+                {
+                    Text = i.Nombre,
+                    Value = i.Id.ToString()
+                });
+            }
+            return View(model);
+        }
+
+        public async Task<IActionResult> ActualizarNumeroVilla(int VillaNo)
+        {
+            var response = await _numeroVillaService.GetAsync<APIResponse>(VillaNo);
+            if (response != null && response.IsExitoso)
+            {
+                NumeroVillaDto numeroVillaDto = JsonConvert.DeserializeObject<NumeroVillaDto>(Convert.ToString(response.Resultado));
+                NumeroVillaUpdateViewModel numeroVillaVM = new()
+                {
+                    NumeroVilla = _mapper.Map<NumeroVillaUpdateDto>(numeroVillaDto)
+                };
+                var villaResponse = await _villaService.GetAllAsync<APIResponse>();
+                if (villaResponse != null && villaResponse.IsExitoso)
+                {
+                    numeroVillaVM.VillaList = JsonConvert.DeserializeObject<List<VillaDto>>(Convert.ToString(villaResponse.Resultado)).Select(i => new SelectListItem
+                    {
+                        Text = i.Nombre,
+                        Value = i.Id.ToString()
+                    });
+                }
+                return View(numeroVillaVM);
+            }
+            return NotFound();
         }
     }
 }

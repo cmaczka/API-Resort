@@ -51,15 +51,15 @@ namespace Resort.Controllers
             }
            
         }
-        [HttpGet("{id:int}")]
+        [HttpGet("{VillaNo:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<APIResponse> GetNumeroVilla(int id)
+        public ActionResult<APIResponse> GetNumeroVilla(int VillaNo)
         {
             try
             {
-                if (id == 0)
+                if (VillaNo == 0)
                 {
                     _logger.LogError("El id de la villa no puede ser 0");
                     _response.IsExitoso = false;
@@ -67,12 +67,12 @@ namespace Resort.Controllers
                     _response.StatusCode = System.Net.HttpStatusCode.BadRequest;
                     return BadRequest(_response);
                 }
-                var numeroVilla = _numeroVillaRepo.Obtener(v => v.VillaId == id, incluirPropiedades: "Villa");
+                var numeroVilla = _numeroVillaRepo.Obtener(v => v.VillaNo == VillaNo, incluirPropiedades: "Villa").Result;
                 if (numeroVilla == null)
                 {
-                    _logger.LogError($"El número de villa con id {id} no fue encontrado");
+                    _logger.LogError($"El número de villa con id {VillaNo} no fue encontrado");
                     _response.IsExitoso = false;
-                    _response.Errores = new List<string> { $"El número de villa con id {id} no fue encontrado" };
+                    _response.Errores = new List<string> { $"El número de villa con id {VillaNo} no fue encontrado" };
                     _response.StatusCode = System.Net.HttpStatusCode.NotFound;
                     return NotFound(_response);
                 }
@@ -82,7 +82,7 @@ namespace Resort.Controllers
                 _response.StatusCode = System.Net.HttpStatusCode.OK;
                 return Ok(_response);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 _response.IsExitoso = false;
                 _response.Errores = new List<string> { "Ocurrió un error al obtener el número de villa" };

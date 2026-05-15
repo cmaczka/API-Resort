@@ -43,12 +43,12 @@ namespace MagicVilla_Web.Services
             });
         }
 
-        public Task<T> GetAsync<T>(int id)
+        public Task<T> GetAsync<T>(int VillaNo)
         {
             return SendAsync<T>(new APIRequest()
             {
                 APIType = DS.APITipo.GET,
-                Url = _numeroVillaUrl + "api/NumeroVilla/" + id
+                Url = _numeroVillaUrl + "api/NumeroVilla/" + VillaNo
             });
         }
 

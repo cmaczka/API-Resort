@@ -103,14 +103,14 @@
         }
       }
     },
-    "/api/NumeroVilla/{id}": {
+    "/api/NumeroVilla/{VillaNo}": {
       "get": {
         "tags": [
           "NumeroVilla"
         ],
         "parameters": [
           {
-            "name": "id",
+            "name": "VillaNo",
             "in": "path",
             "required": true,
             "schema": {
@@ -181,7 +181,9 @@
             }
           }
         }
-      },
+      }
+    },
+    "/api/NumeroVilla/{id}": {
       "delete": {
         "tags": [
           "NumeroVilla"

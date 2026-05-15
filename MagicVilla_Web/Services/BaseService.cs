@@ -47,6 +47,30 @@ namespace MagicVilla_Web.Services
                 HttpResponseMessage apiResponse = await client.SendAsync(message);
 
                 var apiContent = await apiResponse.Content.ReadAsStringAsync();
+
+                try
+                {
+                    APIResponse response= JsonConvert.DeserializeObject<APIResponse>(apiContent);
+                    if(apiResponse.StatusCode== System.Net.HttpStatusCode.BadRequest || apiResponse.StatusCode== System.Net.HttpStatusCode.NotFound)
+                    {
+                        response.IsExitoso = false;
+                        response.StatusCode= apiResponse.StatusCode;
+                        var res = JsonConvert.SerializeObject(response);
+                        var obj = JsonConvert.DeserializeObject<T>(res);
+                        return obj;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    var errorResponse = new APIResponse
+                    {
+                        IsExitoso = false,
+                        StatusCode = apiResponse.StatusCode,
+                        Errores = new List<string> { "Error al procesar la respuesta de la API: " + Convert.ToString(ex.Message) }
+                    };
+                    JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(errorResponse));
+                }
+
                 var apiResponseDTO = JsonConvert.DeserializeObject<APIResponse>(apiContent);
 
                 // 1) Intentar leer wrapper
@@ -60,7 +84,6 @@ namespace MagicVilla_Web.Services
 
                 if (wrapper != null && wrapper.IsExitoso)
                     return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(wrapper.Resultado));
-
 
                 //4) Si no fue exitoso: devolvés el wrapper como T(por si T es APIResponse o compatible)
                 return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(wrapper));

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MAtgicVilla_Utilidad")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cc3577fbac37c25b5d0283a1d80df916b48876f4")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ab3be95dc0748cbc8dcacbe4335b90dda9473598")]
 [assembly: System.Reflection.AssemblyProductAttribute("MAtgicVilla_Utilidad")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MAtgicVilla_Utilidad")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
