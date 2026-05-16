@@ -142,5 +142,28 @@ namespace MagicVilla_Web.Controllers
             }
             return View(model);
         }
+        public async Task<IActionResult> RemoverNumeroVilla(int VillaNo)
+        {
+            NumeroVillaDeleteViewModel numeroVillaVM = new();
+
+            var response = await _numeroVillaService.GetAsync<APIResponse>(VillaNo);
+            if (response != null && response.IsExitoso)
+            {
+                NumeroVillaDto modelo = JsonConvert.DeserializeObject<NumeroVillaDto>(Convert.ToString(response.Resultado));
+                numeroVillaVM.NumeroVilla = modelo;
+            }
+            response = await _villaService.GetAllAsync<APIResponse>();
+            if(response != null && response.IsExitoso)
+            {
+                numeroVillaVM.VillaList = JsonConvert.DeserializeObject<List<VillaDto>>(Convert.ToString(response.Resultado)).Select(i => new SelectListItem
+                {
+                    Text = i.Nombre,
+                    Value = i.Id.ToString()
+                });
+
+                return View(numeroVillaVM);
+            }
+            return NotFound();
+        }
     }
 }
