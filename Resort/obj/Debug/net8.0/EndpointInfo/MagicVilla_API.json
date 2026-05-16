@@ -181,24 +181,40 @@
             }
           }
         }
-      }
-    },
-    "/api/NumeroVilla/{id}": {
-      "delete": {
+      },
+      "put": {
         "tags": [
           "NumeroVilla"
         ],
         "parameters": [
           {
-            "name": "id",
+            "name": "VillaNo",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int32"
+              "type": "string"
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NumeroVillaUpdateDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NumeroVillaUpdateDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/NumeroVillaUpdateDto"
+              }
+            }
+          }
+        },
         "responses": {
           "204": {
             "description": "No Content"
@@ -244,8 +260,10 @@
             }
           }
         }
-      },
-      "put": {
+      }
+    },
+    "/api/NumeroVilla/{id}": {
+      "delete": {
         "tags": [
           "NumeroVilla"
         ],
@@ -255,29 +273,11 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "format": "int32"
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NumeroVillaUpdateDto"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NumeroVillaUpdateDto"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/NumeroVillaUpdateDto"
-              }
-            }
-          }
-        },
         "responses": {
           "204": {
             "description": "No Content"

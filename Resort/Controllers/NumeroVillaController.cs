@@ -185,7 +185,7 @@ namespace Resort.Controllers
             }
            
         }
-        [HttpPut("{id:int}")]
+        [HttpPut("{VillaNo:int}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -212,11 +212,11 @@ namespace Resort.Controllers
                 _response.StatusCode = System.Net.HttpStatusCode.BadRequest;
                 return BadRequest(_response);
             }
-            var numeroVilla = await _numeroVillaRepo.Obtener(v => v.VillaId == numeroVillaDto.VillaId);
+            var numeroVilla = await _numeroVillaRepo.Obtener(v => v.VillaNo == numeroVillaDto.VillaNo);
             if (numeroVilla == null)
             {
                 _response.IsExitoso = false;
-                _response.Errores = new List<string> { $"El número de villa con id {numeroVillaDto.VillaId} no fue encontrado" };
+                _response.Errores = new List<string> { $"El número de villa con id {numeroVillaDto.VillaNo} no fue encontrado" };
                 _response.StatusCode = System.Net.HttpStatusCode.NotFound;
                 return NotFound(_response);
             }
@@ -228,7 +228,7 @@ namespace Resort.Controllers
                 _response.StatusCode = System.Net.HttpStatusCode.NotFound;
                 return NotFound(_response);
             }
-            _mapper.Map(numeroVillaDto, villa);
+            _mapper.Map(numeroVillaDto, numeroVilla);
             // ✅ establecer el valor original (clave)
             _numeroVillaRepo.SetOriginalRowVersion(numeroVilla, numeroVillaDto.RowVersion);
 

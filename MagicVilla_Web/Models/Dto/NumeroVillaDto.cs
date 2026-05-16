@@ -12,5 +12,7 @@ namespace MagicVilla_Web.Models
         public string DetalleEspecial { get; set; }
 
         public VillaDto Villa { get; set; }
+        [Timestamp]
+        public byte[] RowVersion { get; set; }
     }
 }
